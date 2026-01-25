@@ -2,39 +2,199 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>Zalaf Control Center</title>
+    <title>Zalaf Admin Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* ستايل مشابه للموقع لتوحيد الهوية */
         body { background: #0f172a; color: white; font-family: 'Cairo', sans-serif; padding: 20px; }
-        .container { max-width: 800px; margin: auto; }
+        .container { max-width: 900px; margin: auto; }
         
         .panel { 
-            background: #1e293b; padding: 25px; border-radius: 15px; 
+            background: #1e293b; padding: 30px; border-radius: 15px; 
             border: 1px solid #334155; margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
         }
         
+        h3 { color: #10b981; margin-top: 0; border-bottom: 1px solid #334155; padding-bottom: 15px; }
+
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .full-width { grid-column: span 2; }
+        
+        label { display: block; margin-bottom: 5px; color: #94a3b8; font-size: 0.9rem; }
         input, textarea, select {
-            width: 100%; box-sizing: border-box; padding: 12px; margin: 8px 0;
+            width: 100%; padding: 10px; margin-bottom: 5px;
             background: #0f172a; border: 1px solid #334155; color: white; border-radius: 8px;
+            box-sizing: border-box; font-family: inherit;
         }
+        input:focus { border-color: #10b981; outline: none; }
         
         button {
             width: 100%; padding: 12px; border: none; border-radius: 8px;
-            font-weight: bold; cursor: pointer; margin-top: 10px;
+            font-weight: bold; cursor: pointer; margin-top: 15px; transition: 0.2s;
         }
-        
         .btn-add { background: #10b981; color: white; }
+        .btn-add:hover { background: #059669; }
         .btn-copy { background: #3b82f6; color: white; }
-        .btn-delete { background: #ef4444; color: white; width: auto; padding: 5px 15px; }
+        .btn-del { background: #ef4444; color: white; width: auto; padding: 5px 12px; margin: 0; }
 
         .json-output {
             background: #000; color: #10b981; font-family: monospace;
             padding: 15px; border-radius: 8px; direction: ltr; text-align: left;
-            white-space: pre-wrap; word-break: break-all;
+            white-space: pre-wrap; height: 150px; overflow-y: auto;
         }
 
         .item-row {
             display: flex; justify-content: space-between; align-items: center;
+            padding: 12px; border-bottom: 1px solid #334155;
+            background: rgba(255,255,255,0.02);
+        }
+        .item-row:hover { background: rgba(255,255,255,0.05); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="panel">
+        <h3>➕ إضافة مشروع جديد متقدم</h3>
+        <div class="form-grid">
+            <div>
+                <label>اسم المشروع (عربي)</label>
+                <input type="text" id="tAr" placeholder="مثال: متجر زلف">
+            </div>
+            <div>
+                <label>Project Name (English)</label>
+                <input type="text" id="tEn" placeholder="Ex: Zalaf Shop" style="direction: ltr;">
+            </div>
+
+            <div class="full-width">
+                <label>الوصف (عربي)</label>
+                <textarea id="dAr" rows="2" placeholder="شرح مختصر للمشروع..."></textarea>
+            </div>
+            <div class="full-width">
+                <label>Description (English)</label>
+                <textarea id="dEn" rows="2" placeholder="Short description..." style="direction: ltr;"></textarea>
+            </div>
+
+            <div class="full-width">
+                <label>التقنيات المستخدمة (افصل بفاصلة)</label>
+                <input type="text" id="pTech" placeholder="Python, React, CSS" style="direction: ltr;">
+            </div>
+
+            <div>
+                <label>رابط المشروع (اتركه فارغاً إذا لم يوجد)</label>
+                <input type="text" id="pLink" placeholder="https://..." style="direction: ltr;">
+            </div>
+            <div>
+                <label>اسم الصورة (مع اللاحقة)</label>
+                <input type="text" id="pImg" placeholder="logo.jpg" style="direction: ltr;">
+            </div>
+
+            <div>
+                <label>تاريخ الإنجاز</label>
+                <input type="date" id="pDate">
+            </div>
+            <div>
+                <label>حالة المشروع</label>
+                <select id="pStatus">
+                    <option value="completed">مكتمل (Completed)</option>
+                    <option value="progress">قيد العمل (In Progress)</option>
+                </select>
+            </div>
+        </div>
+        <button class="btn-add" onclick="addItem()">إضافة للقائمة</button>
+    </div>
+
+    <div class="panel">
+        <h3>📋 المشاريع الحالية</h3>
+        <div id="listContainer"></div>
+    </div>
+
+    <div class="panel">
+        <h3>💾 كود JSON (انسخ هذا وضعه في data.json)</h3>
+        <textarea id="finalCode" class="json-output" readonly></textarea>
+        <button class="btn-copy" onclick="copyCode()">نسخ الكود</button>
+    </div>
+</div>
+
+<script>
+    let projects = [];
+
+    // محاولة تحميل البيانات الموجودة مسبقاً
+    fetch('data.json').then(res => res.json()).then(data => {
+        projects = data;
+        updateUI();
+    }).catch(() => console.log('New list'));
+
+    function addItem() {
+        const tAr = document.getElementById('tAr').value;
+        const tEn = document.getElementById('tEn').value;
+        const dAr = document.getElementById('dAr').value;
+        const dEn = document.getElementById('dEn').value;
+        const techStr = document.getElementById('pTech').value;
+        const link = document.getElementById('pLink').value;
+        const img = document.getElementById('pImg').value || 'logo.jpg';
+        const date = document.getElementById('pDate').value || new Date().toISOString().split('T')[0];
+        const status = document.getElementById('pStatus').value;
+
+        if(!tAr || !tEn) return alert('يرجى كتابة الاسم باللغتين');
+
+        const newItem = {
+            id: Date.now(),
+            title_ar: tAr,
+            title_en: tEn,
+            desc_ar: dAr,
+            desc_en: dEn,
+            tech: techStr.split(',').map(s => s.trim()).filter(s => s),
+            link: link,
+            img: img,
+            date: date,
+            status: status
+        };
+
+        projects.push(newItem);
+        clearForm();
+        updateUI();
+    }
+
+    function deleteItem(id) {
+        if(confirm('حذف؟')) {
+            projects = projects.filter(p => p.id !== id);
+            updateUI();
+        }
+    }
+
+    function clearForm() {
+        document.getElementById('tAr').value = '';
+        document.getElementById('tEn').value = '';
+        document.getElementById('dAr').value = '';
+        document.getElementById('dEn').value = '';
+        document.getElementById('pTech').value = '';
+        document.getElementById('pLink').value = '';
+    }
+
+    function updateUI() {
+        const list = document.getElementById('listContainer');
+        list.innerHTML = projects.map(p => `
+            <div class="item-row">
+                <div>
+                    <div style="font-weight:bold; color:#10b981">${p.title_ar}</div>
+                    <div style="font-size:0.8em; color:#94a3b8">${p.title_en}</div>
+                </div>
+                <button class="btn-del" onclick="deleteItem(${p.id})">حذف</button>
+            </div>
+        `).join('');
+
+        document.getElementById('finalCode').value = JSON.stringify(projects, null, 2);
+    }
+
+    function copyCode() {
+        document.getElementById("finalCode").select();
+        document.execCommand("copy");
+        alert("✅ تم النسخ! الصق الكود في ملف data.json");
+    }
+</script>
+
+</body>
+</html>            display: flex; justify-content: space-between; align-items: center;
             padding: 10px; border-bottom: 1px solid #334155;
         }
     </style>
