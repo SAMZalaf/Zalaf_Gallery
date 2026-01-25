@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -121,7 +121,7 @@
             <div class="controls">
                 <button class="btn active" id="btnGrid" onclick="switchView('grid')"><i class="fas fa-th-large"></i></button>
                 <button class="btn" id="btnTable" onclick="switchView('table')"><i class="fas fa-list"></i></button>
-                <button class="btn" onclick="toggleLang()" id="langBtn">EN</button>
+                <button class="btn" onclick="toggleLang()" id="langBtn">عربي</button>
             </div>
         </header>
 
@@ -150,7 +150,7 @@
     </div>
 
     <script>
-        let isArabic = true;
+        let isArabic = false;
         let currentView = 'grid';
         let projectsData = [];
 
