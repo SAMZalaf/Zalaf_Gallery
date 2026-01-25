@@ -2,9 +2,9 @@
   {
     "id": 1,
     "title_ar": "Static Bot",
-    "title_en": "📡Proxy Management System & 🛒E-Shop",
+    "title_en": "Static Bot",
     "desc_ar": "بوت تيليغرام بمزايا كبيرة لبيع بروكسي متعدد الأنواع ، و إدارة الزبائن و غيره.",
-    "desc_en": "Integrated system for sales and inventory management with dashboard.",
+    "desc_en": "📡Proxy Management System & 🛒E-Shop.",
     "tech": ["Telegram" , "📱Mobile" , "🐍Python" , "🐧Linux" , "TypeScript(Web UI)"],
     "link": "https://t.me/Static_Bot/",
     "date": "2024-12-01",
