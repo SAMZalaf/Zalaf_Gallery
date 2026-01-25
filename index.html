@@ -1,159 +1,271 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" id="mainHtml">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zalaf Portfolio</title>
+    <title>Mohamad Zalaf - Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;900&display=swap');
-        
         :root {
             --emerald: #10b981;
-            --emerald-glow: rgba(16, 185, 129, 0.4);
-            --dark: #0f172a;
-            --card: #1e293b;
+            --emerald-dark: #064e3b;
+            --dark-bg: #0f172a;
+            --card-bg: #1e293b;
+            --text-gray: #cbd5e1;
         }
 
         body {
-            background: var(--dark);
+            background-color: var(--dark-bg);
             color: white;
             font-family: 'Cairo', sans-serif;
             margin: 0;
-            padding: 20px;
+            padding-bottom: 50px;
         }
 
-        /* تصميم الرأس */
+        /* Top Contact Bar */
+        .top-bar {
+            background: linear-gradient(90deg, #064e3b, #065f46);
+            padding: 8px 0;
+            font-size: 0.85rem;
+            border-bottom: 1px solid var(--emerald);
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .contact-flex {
+            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
+        }
+        .contact-item { margin-left: 15px; color: #fff; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; }
+        .contact-item:hover { color: var(--emerald); }
+
+        /* Header & Logo */
         header {
+            padding: 20px 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            max-width: 1200px;
-            margin: 0 auto 50px auto;
-            padding-bottom: 20px;
             border-bottom: 1px solid rgba(16, 185, 129, 0.2);
+            margin-bottom: 30px;
         }
+        .logo-area { display: flex; align-items: center; gap: 15px; }
+        .logo-img { width: 60px; height: 60px; border-radius: 12px; object-fit: cover; border: 2px solid var(--emerald); }
+        .brand-name { font-size: 1.8rem; font-weight: 700; color: var(--emerald); margin: 0; line-height: 1; }
+        .brand-sub { font-size: 0.9rem; color: var(--text-gray); }
 
-        h1 { margin: 0; color: var(--emerald); letter-spacing: 2px; text-shadow: 0 0 15px var(--emerald-glow); }
-        
-        .lang-btn {
-            background: transparent;
-            border: 1px solid var(--emerald);
-            color: var(--emerald);
-            padding: 5px 15px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.3s;
+        /* Controls */
+        .controls { display: flex; gap: 10px; }
+        .btn {
+            background: transparent; border: 1px solid var(--emerald); color: var(--emerald);
+            padding: 8px 15px; border-radius: 8px; cursor: pointer; transition: 0.3s;
+            display: flex; align-items: center; gap: 8px;
         }
-        .lang-btn:hover { background: var(--emerald); color: white; }
+        .btn:hover, .btn.active { background: var(--emerald); color: white; }
 
-        /* الشبكة والبطاقات */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 30px;
-            max-width: 1200px;
-            margin: auto;
+        /* Grid View */
+        .grid-view {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px;
         }
-
         .card {
-            background: var(--card);
-            border-radius: 15px;
-            overflow: hidden;
-            transition: transform 0.3s, box-shadow 0.3s;
-            border: 1px solid transparent;
+            background: var(--card-bg); border-radius: 16px; overflow: hidden;
+            border: 1px solid #334155; transition: transform 0.3s; display: flex; flex-direction: column;
         }
-
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: var(--emerald);
-            box-shadow: 0 10px 30px -10px var(--emerald-glow);
+        .card:hover { transform: translateY(-5px); border-color: var(--emerald); }
+        .card-img { width: 100%; height: 180px; object-fit: cover; background: #000; }
+        .card-body { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
+        .tech-tags { display: flex; flex-wrap: wrap; gap: 5px; margin: 10px 0; }
+        .tag { background: rgba(16, 185, 129, 0.15); color: var(--emerald); padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; }
+        .date-badge { font-size: 0.75rem; color: #64748b; margin-bottom: 5px; display: block; }
+        
+        /* Table View */
+        .table-responsive { overflow-x: auto; display: none; }
+        .projects-table {
+            width: 100%; border-collapse: collapse; background: var(--card-bg); border-radius: 12px; overflow: hidden;
         }
-
-        .card-img {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-            background: #000;
+        .projects-table th, .projects-table td {
+            padding: 15px; text-align: right; border-bottom: 1px solid #334155;
         }
+        .projects-table th { background: rgba(16, 185, 129, 0.1); color: var(--emerald); }
+        .projects-table tr:hover { background: rgba(255,255,255,0.02); }
 
-        .content { padding: 20px; }
+        /* Footer */
+        footer { text-align: center; margin-top: 50px; color: #64748b; font-size: 0.9rem; border-top: 1px solid #334155; padding-top: 20px; }
 
-        .tag {
-            background: rgba(16, 185, 129, 0.1);
-            color: var(--emerald);
-            padding: 4px 10px;
-            border-radius: 5px;
-            font-size: 0.8em;
-            font-weight: bold;
-        }
-
-        .link-btn {
-            display: block;
-            text-align: center;
-            background: var(--emerald);
-            color: white;
-            text-decoration: none;
-            padding: 10px;
-            border-radius: 8px;
-            margin-top: 15px;
-            font-weight: bold;
-        }
+        /* Utility */
+        .hidden { display: none !important; }
+        [dir="ltr"] .contact-item { margin-left: 0; margin-right: 15px; }
+        [dir="ltr"] .projects-table th, [dir="ltr"] .projects-table td { text-align: left; }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>⚡ ZALAF</h1>
-        <button class="lang-btn" onclick="toggleLang()" id="langBtn">English</button>
-    </header>
+    <div class="top-bar">
+        <div class="container contact-flex">
+            <div>
+                <a href="mailto:MohamadZalaf@outlook.com" class="contact-item"><i class="fas fa-envelope"></i> MohamadZalaf@outlook.com</a>
+                <a href="mailto:Mohamadzalaf2017@gmail.com" class="contact-item"><i class="fas fa-envelope"></i> Gmail</a>
+                <a href="https://t.me/MohamadZalaf" target="_blank" class="contact-item"><i class="fab fa-telegram"></i> Telegram</a>
+            </div>
+            <div id="copyrightName">Mohamad Zalaf © 2025</div>
+        </div>
+    </div>
 
-    <div class="grid" id="projectsGrid">
-        <p style="text-align:center; width:100%">جارٍ تحميل المشاريع...</p>
+    <div class="container">
+        <header>
+            <div class="logo-area">
+                <img src="logo.jpg" alt="Zalaf Logo" class="logo-img" onerror="this.src='https://via.placeholder.com/60'">
+                <div>
+                    <h1 class="brand-name">ZALAF</h1>
+                    <span class="brand-sub" id="jobTitle">Software Engineer</span>
+                </div>
+            </div>
+            <div class="controls">
+                <button class="btn active" id="btnGrid" onclick="switchView('grid')"><i class="fas fa-th-large"></i></button>
+                <button class="btn" id="btnTable" onclick="switchView('table')"><i class="fas fa-list"></i></button>
+                <button class="btn" onclick="toggleLang()" id="langBtn">EN</button>
+            </div>
+        </header>
+
+        <div id="loader" style="text-align: center; padding: 40px;">Loading...</div>
+
+        <div id="gridView" class="grid-view"></div>
+
+        <div id="tableView" class="table-responsive">
+            <table class="projects-table">
+                <thead>
+                    <tr id="tableHeader">
+                        <th>المشروع</th>
+                        <th>التاريخ</th>
+                        <th>الحالة</th>
+                        <th>التقنيات</th>
+                        <th>رابط</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+
+        <footer>
+            <p>Designed & Developed by Mohamad Zalaf © 2025</p>
+        </footer>
     </div>
 
     <script>
         let isArabic = true;
+        let currentView = 'grid';
         let projectsData = [];
 
-        // جلب البيانات من ملف JSON
+        // نصوص الواجهة
+        const uiText = {
+            ar: {
+                job: "مهندس برمجيات",
+                viewBtn: "معاينة",
+                noLink: "لا يوجد رابط",
+                status: { completed: "مكتمل", progress: "قيد التطوير" },
+                tableHeaders: ["المشروع", "التاريخ", "الحالة", "التقنيات", "الرابط"]
+            },
+            en: {
+                job: "Software Engineer",
+                viewBtn: "View Project",
+                noLink: "No Link",
+                status: { completed: "Completed", progress: "In Progress" },
+                tableHeaders: ["Project", "Date", "Status", "Tech Stack", "Link"]
+            }
+        };
+
         async function loadProjects() {
             try {
-                // ملاحظة: نضيف الوقت لتجنب التخزين المؤقت للمتصفح (Cache)
-                const response = await fetch('data.json?t=' + new Date().getTime());
-                if (!response.ok) throw new Error("لم يتم العثور على ملف data.json");
+                const response = await fetch('data.json?t=' + Date.now());
+                if (!response.ok) throw new Error("Failed");
                 projectsData = await response.json();
-                renderProjects();
+                document.getElementById('loader').classList.add('hidden');
+                render();
             } catch (error) {
-                document.getElementById('projectsGrid').innerHTML = `<p style="color:red">خطأ: تأكد من رفع ملف data.json</p>`;
-                console.error(error);
+                document.getElementById('loader').innerHTML = "Error loading data.json";
             }
         }
 
-        function renderProjects() {
-            const grid = document.getElementById('projectsGrid');
-            grid.innerHTML = projectsData.map(p => `
-                <div class="card">
-                    <img src="${p.img}" class="card-img" onerror="this.src='https://via.placeholder.com/400x200?text=Zalaf+Code'">
-                    <div class="content">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                            <span class="tag">${p.type}</span>
-                        </div>
-                        <h3 style="margin:0 0 10px 0">${p.name}</h3>
-                        <p style="color:#cbd5e1; font-size:0.9em; margin-bottom:15px; height: 40px; overflow:hidden;">${p.desc}</p>
-                        <a href="${p.link}" target="_blank" class="link-btn">
-                            ${isArabic ? 'مشاهدة المشروع' : 'View Project'}
-                        </a>
-                    </div>
-                </div>
-            `).join('');
+        function switchView(mode) {
+            currentView = mode;
+            // تحديث الأزرار
+            document.getElementById('btnGrid').className = `btn ${mode === 'grid' ? 'active' : ''}`;
+            document.getElementById('btnTable').className = `btn ${mode === 'table' ? 'active' : ''}`;
+            
+            // تحديث العرض
+            if(mode === 'grid') {
+                document.getElementById('gridView').classList.remove('hidden');
+                document.getElementById('tableView').classList.remove('show');
+                document.getElementById('tableView').style.display = 'none';
+                document.getElementById('gridView').style.display = 'grid';
+            } else {
+                document.getElementById('gridView').style.display = 'none';
+                document.getElementById('tableView').style.display = 'block';
+            }
         }
 
         function toggleLang() {
             isArabic = !isArabic;
-            document.getElementById('mainHtml').dir = isArabic ? 'rtl' : 'ltr';
-            document.getElementById('langBtn').innerText = isArabic ? 'English' : 'عربي';
-            renderProjects();
+            document.documentElement.dir = isArabic ? 'rtl' : 'ltr';
+            document.documentElement.lang = isArabic ? 'ar' : 'en';
+            document.body.style.fontFamily = isArabic ? "'Cairo', sans-serif" : "'Poppins', sans-serif";
+            document.getElementById('langBtn').textContent = isArabic ? "EN" : "عربي";
+            render();
+        }
+
+        function render() {
+            const lang = isArabic ? 'ar' : 'en';
+            const text = uiText[lang];
+            
+            document.getElementById('jobTitle').textContent = text.job;
+
+            // 1. Render Grid
+            const gridHTML = projectsData.map(p => {
+                const title = isArabic ? p.title_ar : p.title_en;
+                const desc = isArabic ? p.desc_ar : p.desc_en;
+                const tagsHTML = p.tech.map(t => `<span class="tag">${t}</span>`).join('');
+                const linkHTML = p.link ? 
+                    `<a href="${p.link}" target="_blank" style="color:var(--emerald); text-decoration:none; font-weight:bold; margin-top:auto;"><i class="fas fa-external-link-alt"></i> ${text.viewBtn}</a>` :
+                    `<span style="color:#64748b; margin-top:auto; font-size:0.9em"><i class="fas fa-lock"></i> ${text.noLink}</span>`;
+                
+                return `
+                <div class="card">
+                    <img src="${p.img}" class="card-img" onerror="this.src='logo.jpg'">
+                    <div class="card-body">
+                        <span class="date-badge"><i class="far fa-calendar-alt"></i> ${p.date}</span>
+                        <h3 style="margin:5px 0">${title}</h3>
+                        <div class="tech-tags">${tagsHTML}</div>
+                        <p style="color:#cbd5e1; font-size:0.9rem; line-height:1.6">${desc}</p>
+                        ${linkHTML}
+                    </div>
+                </div>`;
+            }).join('');
+            document.getElementById('gridView').innerHTML = gridHTML;
+
+            // 2. Render Table
+            // تحديث ترويسة الجدول
+            const theadHTML = text.tableHeaders.map(h => `<th>${h}</th>`).join('');
+            document.getElementById('tableHeader').innerHTML = theadHTML;
+
+            const rowsHTML = projectsData.map(p => {
+                const title = isArabic ? p.title_ar : p.title_en;
+                const statusText = text.status[p.status] || p.status;
+                const tags = p.tech.join(', ');
+                const linkBtn = p.link ? 
+                    `<a href="${p.link}" target="_blank" class="btn" style="padding:5px 10px; font-size:0.8em; width:fit-content">${text.viewBtn}</a>` : 
+                    `<span style="opacity:0.5">${text.noLink}</span>`;
+
+                return `
+                <tr>
+                    <td style="font-weight:bold; display:flex; align-items:center; gap:10px;">
+                        <img src="${p.img}" style="width:40px; height:40px; border-radius:5px; object-fit:cover" onerror="this.src='logo.jpg'">
+                        ${title}
+                    </td>
+                    <td>${p.date}</td>
+                    <td><span style="color:${p.status === 'completed' ? '#10b981' : '#f59e0b'}">● ${statusText}</span></td>
+                    <td style="color:#94a3b8">${tags}</td>
+                    <td>${linkBtn}</td>
+                </tr>`;
+            }).join('');
+            document.getElementById('tableBody').innerHTML = rowsHTML;
         }
 
         loadProjects();
