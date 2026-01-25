@@ -8,7 +8,19 @@
     "tech": ["Telegram" , "📱Mobile" , "🐍Python" , "🐧Linux" , "TypeScript(Web UI)"],
     "link": "https://t.me/Static_Bot/",
     "date": "2024-12-01",
-    "status": "completed",
+    "status": "✅Completed + 🔄Updating",
     "img": "1.jpg"
+  },
+  {
+    "id": 2,
+    "title_ar": "Lofi Bot - lite",
+    "title_en": "Lofi Bot - lite",
+    "desc_ar": "بوت تيليغرام بمزايا كبيرة لبيع حسابات متعدد الأنواع ، و إدارة الزبائن و غيره.",
+    "desc_en": "🛒E-Shop & 👤Account Management System.",
+    "tech": ["Telegram" , "📱Mobile" , "🐍Python" , "🐧Linux"],
+    "link": "https://t.me/Lofi_Bot/",
+    "date": "2025-12-20",
+    "status": "✅Completed",
+    "img": "2.jpg"
   }
 ]
