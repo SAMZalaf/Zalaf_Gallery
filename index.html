@@ -121,7 +121,7 @@
             <div class="controls">
                 <button class="btn active" id="btnGrid" onclick="switchView('grid')"><i class="fas fa-th-large"></i></button>
                 <button class="btn" id="btnTable" onclick="switchView('table')"><i class="fas fa-list"></i></button>
-                <button class="btn" onclick="toggleLang()" id="langBtn">🇸🇦عربي</button>
+                <button class="btn" onclick="toggleLang()" id="langBtn">عربي🇸🇦</button>
             </div>
         </header>
 
@@ -207,7 +207,7 @@
             document.documentElement.dir = isArabic ? 'rtl' : 'ltr';
             document.documentElement.lang = isArabic ? 'ar' : 'en';
             document.body.style.fontFamily = isArabic ? "'Cairo', sans-serif" : "'Poppins', sans-serif";
-            document.getElementById('langBtn').textContent = isArabic ? "EN🇺🇸" : "🇸🇦عربي";
+            document.getElementById('langBtn').textContent = isArabic ? "🇺🇸EN" : "عربي🇸🇦";
             render();
         }
 
