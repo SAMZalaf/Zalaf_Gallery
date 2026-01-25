@@ -1,12 +1,12 @@
 [
   {
     "id": 1,
-    "title_ar": "نظام إدارة المتجر",
-    "title_en": "Shop Management System",
-    "desc_ar": "نظام متكامل لإدارة المبيعات والمخزون مع لوحة تحكم.",
+    "title_ar": "Static Bot",
+    "title_en": "📡Proxy Management System & 🛒E-Shop",
+    "desc_ar": "بوت تيليغرام بمزايا كبيرة لبيع بروكسي متعدد الأنواع ، و إدارة الزبائن و غيره.",
     "desc_en": "Integrated system for sales and inventory management with dashboard.",
-    "tech": ["Python", "Django", "React"],
-    "link": "https://.me/Static_Bot/",
+    "tech": ["Telegram" , "📱Mobile" , "🐍Python" , "🐧Linux" , "TypeScript(Web UI)"],
+    "link": "https://t.me/Static_Bot/",
     "date": "2024-12-01",
     "status": "completed",
     "img": "1.jpg"
