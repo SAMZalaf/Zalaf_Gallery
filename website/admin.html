@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>Zalaf Control Center</title>
+    <style>
+        /* ستايل مشابه للموقع لتوحيد الهوية */
+        body { background: #0f172a; color: white; font-family: 'Cairo', sans-serif; padding: 20px; }
+        .container { max-width: 800px; margin: auto; }
+        
+        .panel { 
+            background: #1e293b; padding: 25px; border-radius: 15px; 
+            border: 1px solid #334155; margin-bottom: 20px;
+        }
+        
+        input, textarea, select {
+            width: 100%; box-sizing: border-box; padding: 12px; margin: 8px 0;
+            background: #0f172a; border: 1px solid #334155; color: white; border-radius: 8px;
+        }
+        
+        button {
+            width: 100%; padding: 12px; border: none; border-radius: 8px;
+            font-weight: bold; cursor: pointer; margin-top: 10px;
+        }
+        
+        .btn-add { background: #10b981; color: white; }
+        .btn-copy { background: #3b82f6; color: white; }
+        .btn-delete { background: #ef4444; color: white; width: auto; padding: 5px 15px; }
+
+        .json-output {
+            background: #000; color: #10b981; font-family: monospace;
+            padding: 15px; border-radius: 8px; direction: ltr; text-align: left;
+            white-space: pre-wrap; word-break: break-all;
+        }
+
+        .item-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 10px; border-bottom: 1px solid #334155;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2 style="text-align:center; color:#10b981">⚙️ لوحة التحكم - مولد البيانات</h2>
+
+    <div class="panel">
+        <h3>➕ إضافة مشروع جديد</h3>
+        <input type="text" id="pName" placeholder="اسم المشروع">
+        <input type="text" id="pDesc" placeholder="الوصف المختصر">
+        <input type="text" id="pLink" placeholder="رابط GitHub أو الموقع">
+        <select id="pType">
+            <option value="Website">موقع ويب</option>
+            <option value="Mobile App">تطبيق موبايل</option>
+            <option value="Desktop">برنامج سطح مكتب</option>
+        </select>
+        <input type="text" id="pImg" placeholder="اسم الصورة (مثال: project1.png)">
+        <button class="btn-add" onclick="addItem()">إضافة للقائمة</button>
+    </div>
+
+    <div class="panel">
+        <h3>📋 المشاريع في الذاكرة الحالية</h3>
+        <div id="listContainer"></div>
+    </div>
+
+    <div class="panel" style="border-color: #10b981;">
+        <h3>💾 كود JSON النهائي (للنسخ)</h3>
+        <p style="font-size:0.9em; color:#cbd5e1">انسخ هذا الكود واستبدل محتوى ملف <code>data.json</code> في GitHub به.</p>
+        <textarea id="finalCode" rows="6" class="json-output" readonly></textarea>
+        <button class="btn-copy" onclick="copyCode()">نسخ الكود</button>
+    </div>
+</div>
+
+<script>
+    // نحاول جلب البيانات القديمة إذا وجدت، أو نبدأ بمصفوفة فارغة
+    let projects = [];
+
+    // دالة لتحميل البيانات الحالية من ملف JSON (اختياري لتسهيل التعديل)
+    async function loadExistingData() {
+        try {
+            const res = await fetch('data.json');
+            if(res.ok) {
+                projects = await res.json();
+                updateUI();
+            }
+        } catch(e) { console.log('بدء قائمة جديدة'); }
+    }
+
+    function addItem() {
+        const item = {
+            id: Date.now(),
+            name: document.getElementById('pName').value,
+            desc: document.getElementById('pDesc').value,
+            link: document.getElementById('pLink').value,
+            type: document.getElementById('pType').value,
+            img: document.getElementById('pImg').value
+        };
+
+        if(!item.name) return alert('أدخل الاسم على الأقل');
+
+        projects.push(item);
+        
+        // تفريغ الحقول
+        document.getElementById('pName').value = '';
+        document.getElementById('pDesc').value = '';
+        document.getElementById('pLink').value = '';
+        document.getElementById('pImg').value = '';
+
+        updateUI();
+    }
+
+    function deleteItem(id) {
+        projects = projects.filter(p => p.id !== id);
+        updateUI();
+    }
+
+    function updateUI() {
+        // تحديث القائمة المرئية
+        const list = document.getElementById('listContainer');
+        list.innerHTML = projects.map(p => `
+            <div class="item-row">
+                <span><b>${p.name}</b> (${p.type})</span>
+                <button class="btn-delete" onclick="deleteItem(${p.id})">حذف</button>
+            </div>
+        `).join('');
+
+        // تحديث كود JSON
+        document.getElementById('finalCode').value = JSON.stringify(projects, null, 2);
+    }
+
+    function copyCode() {
+        const copyText = document.getElementById("finalCode");
+        copyText.select();
+        document.execCommand("copy");
+        alert("✅ تم نسخ الكود! اذهب الآن لملف data.json في GitHub وحدثه.");
+    }
+
+    // عند تشغيل الصفحة نحاول جلب البيانات القديمة لتعديلها
+    loadExistingData();
+</script>
+
+</body>
+</html>
